@@ -47,29 +47,32 @@ int main()
 
     printf("Servidor TCP rodando no Windows e escutando na porta 8080...\n");
 
-    while (1)
-    {
+    while(1) {
         struct sockaddr_in cliente_endereco;
         int c_tamanho = sizeof(cliente_endereco);
+        
+        SOCKET cliente_socket = accept(servidor_socket, (struct sockaddr *)&cliente_endereco, &c_tamanho); 
+        
+        if (cliente_socket != INVALID_SOCKET) {
+            printf("\n[Cliente conectado!]\n");
 
-        SOCKET cliente_socket = accept(servidor_socket, (struct sockaddr *)&cliente_endereco, &c_tamanho);
+            char buffer[1024]; 
+            
+            while(1) {
+                memset(buffer, '\0', 1024); 
 
-        if (cliente_socket != INVALID_SOCKET)
-        {
-            printf("\n[Nova Conexao Detectada!]\n");
+                int bytes_recebidos = recv(cliente_socket, buffer, 1024, 0); 
 
-            char buffer[1024];
-            memset(buffer, '\0', 1024);
-
-            int bytes_recebidos = recv(cliente_socket, buffer, 1024, 0);
-
-            if (bytes_recebidos > 0)
-            {
-                printf("Dados recebidos: %s\n", buffer);
+                if (bytes_recebidos > 0) {
+                    printf("Cliente diz: %s", buffer); 
+                } 
+                else {
+                    printf("[Cliente se desconectou]\n");
+                    break; 
+                }
             }
 
-            closesocket(cliente_socket);
-            printf("[Conexao encerrada com este cliente. Aguardando o proximo...]\n");
+            closesocket(cliente_socket); 
         }
     }
 
