@@ -22,7 +22,7 @@ int main()
     struct sockaddr_in servidor_endereco;
     servidor_endereco.sin_family = AF_INET;
     servidor_endereco.sin_port = htons(8080);
-    servidor_endereco.sin_addr.s_addr = inet_addr("192.168.1.1"); 
+    servidor_endereco.sin_addr.s_addr = inet_addr("192.168.15.6"); 
     memset(&(servidor_endereco.sin_zero), '\0', 8);
 
     printf("Tentando se conectar ao servidor...\n");
@@ -35,7 +35,7 @@ int main()
 
     printf("Conectado com sucesso!\n");
 
-    char *mensagem = "Ola Servidor! Mensagem enviada via codigo C puro.";
+    char *mensagem = "Teste wifi";
     
     int bytes_enviados = send(cliente_socket, mensagem, strlen(mensagem), 0);
 
