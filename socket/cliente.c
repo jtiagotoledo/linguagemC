@@ -35,21 +35,26 @@ int main()
 
     printf("Conectado com sucesso!\n");
 
-    char mensagem_usuario[1024]; 
-    memset(mensagem_usuario, '\0', 1024); 
+    char mensagem_usuario[1024];
 
-    printf("Digite a mensagem que deseja enviar: ");
-    
-    fgets(mensagem_usuario, 1024, stdin); 
+    while (1) {
+        memset(mensagem_usuario, '\0', 1024); 
 
-    int bytes_enviados = send(cliente_socket, mensagem_usuario, strlen(mensagem_usuario), 0);
+        printf("Você: ");
+        fgets(mensagem_usuario, 1024, stdin); 
 
-    if (bytes_enviados == SOCKET_ERROR) {
-        printf("Falha ao enviar os dados.\n");
-    } else {
-        printf("Mensagem personalizada disparada com sucesso!\n");
+        if (strncmp(mensagem_usuario, "sair", 4) == 0) {
+            printf("Encerrando conexão...\n");
+            break; 
+        }
+
+        int bytes_enviados = send(cliente_socket, mensagem_usuario, strlen(mensagem_usuario), 0); 
+
+        if (bytes_enviados == SOCKET_ERROR) {
+            printf("[Erro] Falha ao enviar os dados. O servidor caiu?\n");
+            break;
+        }
     }
-
     closesocket(cliente_socket);
     WSACleanup();
 
