@@ -35,14 +35,19 @@ int main()
 
     printf("Conectado com sucesso!\n");
 
-    char *mensagem = "Teste wifi";
+    char mensagem_usuario[1024]; 
+    memset(mensagem_usuario, '\0', 1024); 
+
+    printf("Digite a mensagem que deseja enviar: ");
     
-    int bytes_enviados = send(cliente_socket, mensagem, strlen(mensagem), 0);
+    fgets(mensagem_usuario, 1024, stdin); 
+
+    int bytes_enviados = send(cliente_socket, mensagem_usuario, strlen(mensagem_usuario), 0);
 
     if (bytes_enviados == SOCKET_ERROR) {
         printf("Falha ao enviar os dados.\n");
     } else {
-        printf("Mensagem de %d bytes disparada com sucesso pela rede!\n", bytes_enviados);
+        printf("Mensagem personalizada disparada com sucesso!\n");
     }
 
     closesocket(cliente_socket);
